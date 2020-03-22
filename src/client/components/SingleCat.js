@@ -1,6 +1,6 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import CatCard from './CatCard'
+import React from 'react';
+import { connect } from 'react-redux';
+import CatCard from './CatCard';
 
 // why are we exporting so much stuff you might ask?
 // and I would say good question
@@ -13,30 +13,53 @@ import CatCard from './CatCard'
 export class DisconnectedSingleCat extends React.Component {
   render() {
     return (
-      <div className='single-cat'>
-
-      </div >
-    )
+      <div className="single-cat">
+        <h2>{this.props ? this.props.name : ''}</h2>
+        <img src={this.props.imageUrl}></img>
+        <ul className="toys">
+          {this.props.toyRatings.map((toy) => (
+            <li key={toy.toyLikeness}>{toy.name}</li>
+          ))}
+        </ul>
+        <div className="friends">
+          <h3>Friends</h3>
+          <ul>
+            {this.props
+              ? this.props.friends.map((cat) => {
+                  return (
+                    <CatCard
+                      key={cat.id}
+                      id={cat.id}
+                      name={cat.name}
+                      img={cat.imageUrl}
+                    ></CatCard>
+                  );
+                })
+              : ''}
+          </ul>
+        </div>
+      </div>
+    );
   }
 }
 
 export const mapStateToProps = (state) => {
-  return {
-
-  }
-}
-
+  return { ...state.cat };
+};
+const goGetCat = () => {
+  return 'hi';
+};
 export const mapDispatchToProps = (dispatch) => {
   return {
-
-  }
-}
+    goGetCat: () => dispatch(goGetCat())
+  };
+};
 
 // don't touch this line
 // but this is the component you probably want in most cases
 // so if you're using DisconnectedSingleCat somewhere else in your program
 // you're gonna have a bad time
-export default connect(mapStateToProps, mapDispatchToProps)(DisconnectedSingleCat)
-
-
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DisconnectedSingleCat);
